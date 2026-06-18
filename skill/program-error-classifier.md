@@ -48,7 +48,7 @@ Classify the error into one of these families before interpreting it.
 
 ### 1. Anchor custom errors
 
-Anchor documents that custom user-defined errors start at code 6000, with the offset defined by the framework, so errors in the 6xxx range often map to entries in the program's custom error enum rather than to generic runtime failures [web:93][web:97]. Metaplex also notes that 6xxx errors are commonly Anchor custom errors and can often be resolved by locating the program's error definitions and matching the offset within the list [web:91].
+Anchor documents that custom user-defined errors start at code 6000, with the offset defined by the framework, so errors in the 6xxx range often map to entries in the program's custom error enum rather than to generic runtime failures. Metaplex also notes that 6xxx errors are commonly Anchor custom errors and can often be resolved by locating the program's error definitions and matching the offset within the list.
 
 Interpretation rule:
 - if the decoded decimal code is 6000 or above
@@ -58,7 +58,7 @@ Interpretation rule:
 
 ### 2. Anchor framework / account validation errors
 
-Some errors come from Anchor's internal account validation layer rather than business logic. These often point to missing accounts, ownership mismatch, signer mismatch, PDA seed mismatch, deserialization issues, or constraint violations [web:93][web:97].
+Some errors come from Anchor's internal account validation layer rather than business logic. These often point to missing accounts, ownership mismatch, signer mismatch, PDA seed mismatch, deserialization issues, or constraint violations.
 
 Interpretation rule:
 - if the logs show account constraint language
@@ -67,7 +67,7 @@ Interpretation rule:
 
 ### 3. Native Solana or SPL program errors
 
-If the failing program is a native program or SPL program, the code must be interpreted relative to that program's own error definitions. Generic messages like insufficient funds, invalid account owner, or invalid instruction data may come from standard program logic rather than the application layer [web:98].
+If the failing program is a native program or SPL program, the code must be interpreted relative to that program's own error definitions. Generic messages like insufficient funds, invalid account owner, or invalid instruction data may come from standard program logic rather than the application layer .
 
 Interpretation rule:
 - determine which program actually emitted the error
@@ -75,7 +75,7 @@ Interpretation rule:
 
 ### 4. Protocol-specific custom errors
 
-Many protocols define their own custom error enums. A code like `0x179d` is just a number until tied to the program's source, IDL, SDK, or docs; Stack Overflow guidance correctly notes that such codes often correspond to a program-specific enum variant in `error.rs` or equivalent definitions [web:96].
+Many protocols define their own custom error enums. A code like `0x179d` is just a number until tied to the program's source, IDL, SDK, or docs; Stack Overflow guidance correctly notes that such codes often correspond to a program-specific enum variant in `error.rs` or equivalent definitions.
 
 Interpretation rule:
 - no source or docs means no confident decode
@@ -106,7 +106,7 @@ If hex:
 
 Example:
 - `0x1770` = `6000`
-- that strongly suggests the first custom Anchor error for an Anchor-based program [web:93][web:97]
+- that strongly suggests the first custom Anchor error for an Anchor-based program
 
 ### Step 3 — Determine the error family
 
@@ -150,11 +150,11 @@ Use these heuristics carefully.
 
 ### If the code decodes to 6000 exactly
 
-For an Anchor-based program, this is often the first custom error in the user-defined error enum because Anchor custom errors begin at 6000 [web:93][web:97]. Do not infer what that first error means until you inspect the actual program's custom error definitions [web:91].
+For an Anchor-based program, this is often the first custom error in the user-defined error enum because Anchor custom errors begin at 6000. Do not infer what that first error means until you inspect the actual program's custom error definitions.
 
 ### If the error mentions ownership
 
-This often indicates the wrong account was passed, the account belongs to a different program than expected, or the client is targeting the wrong deployed program ID. A common example discussed publicly is an ownership error caused by mismatched `declare_id!` / deployed program configuration [web:86].
+This often indicates the wrong account was passed, the account belongs to a different program than expected, or the client is targeting the wrong deployed program ID. A common example discussed publicly is an ownership error caused by mismatched `declare_id!` / deployed program configuration.
 
 ### If the error appears before any business-logic logs
 
@@ -223,8 +223,8 @@ Route if needed:
 ### Example 1 — `custom program error: 0x1770`
 
 - convert hex to decimal → 6000
-- if the emitting program is Anchor-based, this strongly suggests the first custom user-defined Anchor error [web:93][web:97]
-- then inspect that program's custom error enum to identify the actual meaning [web:91]
+- if the emitting program is Anchor-based, this strongly suggests the first custom user-defined Anchor error 
+- then inspect that program's custom error enum to identify the actual meaning
 
 Do not say "0x1770 means X" unless the program's source confirms it.
 
@@ -234,13 +234,13 @@ If the decoded or surrounding context indicates "account is not owned by the exe
 - wrong account passed
 - wrong program ID targeted by client
 - stale IDL / wrong environment config
-- account expected to be program-owned but is not [web:86]
+- account expected to be program-owned but is not
 
 ### Example 3 — unknown protocol custom error
 
 If a protocol emits a custom error and no source or docs are available:
 - do not fake the decode
-- use surrounding logs, failing instruction, and account context to generate ranked hypotheses only [web:96]
+- use surrounding logs, failing instruction, and account context to generate ranked hypotheses only 
 
 ## Guardrails
 

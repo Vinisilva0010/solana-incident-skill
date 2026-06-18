@@ -50,7 +50,7 @@ If the user cannot identify the callee, ask for full logs first.
 
 ## What CPI Means Operationally
 
-Solana defines CPI as one program invoking another during execution, with the caller halted until the callee returns, which means the visible failure may be downstream of the top-level instruction [web:133][web:143]. Solana and Anchor guidance both emphasize that a CPI requires the target program ID, the correct accounts for the target instruction, and the correct instruction data, while PDA-authorized CPI paths require signer seeds via `invoke_signed` or `new_with_signer` patterns rather than ordinary invocation [web:136][web:134][web:140].
+Solana defines CPI as one program invoking another during execution, with the caller halted until the callee returns, which means the visible failure may be downstream of the top-level instruction. Solana and Anchor guidance both emphasize that a CPI requires the target program ID, the correct accounts for the target instruction, and the correct instruction data, while PDA-authorized CPI paths require signer seeds via `invoke_signed` or `new_with_signer` patterns rather than ordinary invocation.
 
 This means CPI bugs usually cluster into a few categories:
 - wrong callee program
@@ -109,7 +109,7 @@ Typical signs:
 
 ## Signer and PDA Checks
 
-Solana's `invoke_signed` exists specifically so a program can authorize a CPI on behalf of one or more PDAs it controls; this is a runtime PDA-signing construct, not cryptographic signing by the program itself [web:134]. Practical CPI guidance also makes clear that plain `invoke` is for cases where the original signer path is enough, while PDA-based authorization requires the exact signer seeds and, in Anchor, typically `new_with_signer` rather than `new` [web:137][web:140][web:141].
+Solana's `invoke_signed` exists specifically so a program can authorize a CPI on behalf of one or more PDAs it controls; this is a runtime PDA-signing construct, not cryptographic signing by the program itself. Practical CPI guidance also makes clear that plain `invoke` is for cases where the original signer path is enough, while PDA-based authorization requires the exact signer seeds and, in Anchor, typically `new_with_signer` rather than `new`.
 
 Ask:
 - does this CPI require a PDA to act as signer?
@@ -123,7 +123,7 @@ A very common mistake is thinking "the program signs." The program does not sign
 
 ## Account Meta Checks
 
-Anchor and Solana CPI docs both emphasize that the callee must receive the exact accounts it expects, with correct mutability, signer semantics, and program references [web:136][web:133]. Many CPI failures are simple integration hygiene problems disguised as complex protocol issues.
+Anchor and Solana CPI docs both emphasize that the callee must receive the exact accounts it expects, with correct mutability, signer semantics, and program references. Many CPI failures are simple integration hygiene problems disguised as complex protocol issues.
 
 Check:
 - correct callee program ID
@@ -139,7 +139,7 @@ If the failure happens after switching to Token-2022 or mixed token stacks, expl
 
 ## Dependency Drift Checks
 
-When a CPI path worked before and then broke, do not immediately blame runtime conditions. Anchor guidance notes that CPI usage often depends on imported CPI modules, program interfaces, IDLs, or source-level instruction builders, so SDK or program updates can change assumptions at the integration boundary [web:138][web:136]. This is especially likely when:
+When a CPI path worked before and then broke, do not immediately blame runtime conditions. Anchor guidance notes that CPI usage often depends on imported CPI modules, program interfaces, IDLs, or source-level instruction builders, so SDK or program updates can change assumptions at the integration boundary. This is especially likely when:
 - an SDK bump regenerated interfaces
 - a protocol changed required accounts
 - a helper crate changed account structs

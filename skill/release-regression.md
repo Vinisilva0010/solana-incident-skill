@@ -56,7 +56,7 @@ If the user cannot name the most recent relevant changes, ask for the narrowest 
 
 ## First Principle: Stable Until Change
 
-If a flow was stable and then failed after a deploy, upgrade, config change, or SDK bump, the changed surface is the first place to look. Solana programs are upgradeable at the same program address, so logic can change without the program ID changing, which makes "same address" a weak guarantee of behavior continuity [web:151][web:157]. This means regression analysis should focus on changed behavior, not just changed addresses.
+If a flow was stable and then failed after a deploy, upgrade, config change, or SDK bump, the changed surface is the first place to look. Solana programs are upgradeable at the same program address, so logic can change without the program ID changing, which makes "same address" a weak guarantee of behavior continuity. This means regression analysis should focus on changed behavior, not just changed addresses.
 
 ## Common Regression Buckets
 
@@ -74,7 +74,7 @@ Signals:
 ### 2. IDL / client drift
 The client and program no longer agree on the interface.
 
-IDLs are the bridge between on-chain programs and off-chain clients, describing instructions, accounts, and errors for client generation and decoding [web:158][web:160]. If the program changed but the client still uses stale generated types, stale account assumptions, or stale error mappings, failures can appear as serialization problems, wrong accounts, wrong instruction data, or misleading decode behavior [web:158].
+IDLs are the bridge between on-chain programs and off-chain clients, describing instructions, accounts, and errors for client generation and decoding. If the program changed but the client still uses stale generated types, stale account assumptions, or stale error mappings, failures can appear as serialization problems, wrong accounts, wrong instruction data, or misleading decode behavior.
 
 Signals:
 - regenerated client not deployed everywhere
@@ -95,7 +95,7 @@ Signals:
 - feature flags changed behavior
 - secrets or config drift
 
-Solana deployment docs stress checking current cluster configuration and program metadata with CLI commands like `solana config get` and `solana program show`, because environment targeting and upgrade authority assumptions are operationally important [web:151].
+Solana deployment docs stress checking current cluster configuration and program metadata with CLI commands like `solana config get` and `solana program show`, because environment targeting and upgrade authority assumptions are operationally important.
 
 ### 4. Dependency regression
 An external protocol, SDK, or helper crate changed assumptions.
@@ -110,7 +110,7 @@ Signals:
 ### 5. Version alignment regression
 Tooling or generated artifacts no longer match.
 
-Anchor release guidance recommends matching framework versions carefully, and public troubleshooting references repeatedly point to CLI / crate version mismatches and stale generated artifacts as a recurring source of confusing failures in Anchor workflows [web:148][web:152][web:155].
+Anchor release guidance recommends matching framework versions carefully, and public troubleshooting references repeatedly point to CLI / crate version mismatches and stale generated artifacts as a recurring source of confusing failures in Anchor workflows.
 
 Signals:
 - new build artifacts but old runtime assumptions
@@ -186,13 +186,13 @@ If production impact is active:
 Always consider these:
 
 ### Program upgrade without client alignment
-A program upgrade can keep the same address while changing behavior, and if the client keeps stale assumptions, transactions may still compile and send but fail at runtime [web:151][web:157][web:158].
+A program upgrade can keep the same address while changing behavior, and if the client keeps stale assumptions, transactions may still compile and send but fail at runtime.
 
 ### Wrong program ID or environment config
-Environment mistakes are common after releases. Solana docs explicitly recommend verifying cluster config and deployed program metadata because a mismatch between intended target and actual configured target can create very confusing symptoms [web:151].
+Environment mistakes are common after releases. Solana docs explicitly recommend verifying cluster config and deployed program metadata because a mismatch between intended target and actual configured target can create very confusing symptoms.
 
 ### IDL drift
-If error decoding, instruction encoding, or account layout assumptions changed, stale IDLs can create invisible client/program disagreement [web:158][web:153].
+If error decoding, instruction encoding, or account layout assumptions changed, stale IDLs can create invisible client/program disagreement.
 
 ### RPC / fee-policy change mistaken for code regression
 Sometimes "the release broke things" actually means:

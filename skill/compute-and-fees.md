@@ -63,7 +63,7 @@ If the user does not know their CU limit or CU price, say that fee diagnosis is 
 
 ## Core Fee Model
 
-Solana documentation states that each transaction pays a base fee of 5,000 lamports per signature plus an optional prioritization fee derived from compute budget instructions [web:128][web:129]. The prioritization fee is calculated from compute unit price and compute unit limit, and it is charged based on the requested limit rather than the actual compute consumed, so oversizing the limit can overpay without improving correctness [web:128][web:123][web:129].
+Solana documentation states that each transaction pays a base fee of 5,000 lamports per signature plus an optional prioritization fee derived from compute budget instructions . The prioritization fee is calculated from compute unit price and compute unit limit, and it is charged based on the requested limit rather than the actual compute consumed, so oversizing the limit can overpay without improving correctness .
 
 Important consequences:
 - you can pay extra and still not land
@@ -79,7 +79,7 @@ Use this conceptual formula:
 - priority fee = compute unit price × compute unit limit
 
 Solana docs express the prioritization fee as:
-`ceil(compute_unit_price * compute_unit_limit / 1,000,000)` lamports [web:128][web:129].
+`ceil(compute_unit_price * compute_unit_limit / 1,000,000)` lamports .
 
 Operational meaning:
 - **CU price** buys scheduling priority
@@ -89,11 +89,11 @@ Operational meaning:
 
 ## Compute Budget Discipline
 
-Metaplex documentation recommends adding compute budget instructions first in the transaction, before the main instructions, and notes that priority fees are most useful during congestion or for time-sensitive operations rather than as a constant default everywhere [web:125]. Compute budget diagnosis is incomplete unless you know:
+Metaplex documentation recommends adding compute budget instructions first in the transaction, before the main instructions, and notes that priority fees are most useful during congestion or for time-sensitive operations rather than as a constant default everywhere . Compute budget diagnosis is incomplete unless you know:
 - how many CUs the transaction actually needs
 - how much safety margin is included
 - whether budget instructions are ordered correctly
-- whether the fee is being paid for a bloated limit instead of a justified one [web:123][web:125]
+- whether the fee is being paid for a bloated limit instead of a justified one 
 
 Ask:
 - what CU usage did simulation report?
@@ -106,7 +106,7 @@ Do not recommend blindly maxing the CU limit.
 
 ## Local Fee Market Awareness
 
-Solana fee behavior is heavily shaped by local fee markets rather than one simple global congestion number. Helius explains that priority fees are influenced by recent fees on the accounts a transaction locks, and account-aware estimation is more useful than naive global guessing [web:121][web:120]. Helius also provides `getPriorityFeeEstimate` specifically to estimate recommended fees from recent network conditions and account locks [web:119][web:131].
+Solana fee behavior is heavily shaped by local fee markets rather than one simple global congestion number. Helius explains that priority fees are influenced by recent fees on the accounts a transaction locks, and account-aware estimation is more useful than naive global guessing. Helius also provides `getPriorityFeeEstimate` specifically to estimate recommended fees from recent network conditions and account locks.
 
 Ask:
 - which accounts does the transaction lock?
@@ -145,7 +145,7 @@ If the transaction landed and failed with a specific program error, do not over-
 
 ## Blockhash Lifecycle
 
-Slow landing and retries are often misread as fee problems when the real issue is blockhash lifecycle handling. Solana confirmation guidance emphasizes tracking validity windows and using healthy, fresh RPCs when fetching blockhashes [web:78]. Helius similarly notes that blockhash errors often come from mismatched RPCs, lagging nodes, or bad commitment alignment in the fetch/send/confirm lifecycle [web:81].
+Slow landing and retries are often misread as fee problems when the real issue is blockhash lifecycle handling. Solana confirmation guidance emphasizes tracking validity windows and using healthy, fresh RPCs when fetching blockhashes. Helius similarly notes that blockhash errors often come from mismatched RPCs, lagging nodes, or bad commitment alignment in the fetch/send/confirm lifecycle.
 
 Ask:
 - when was the blockhash fetched?

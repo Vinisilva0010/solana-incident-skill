@@ -75,7 +75,7 @@ Many teams incorrectly treat these as one thing. Diagnose them separately.
 
 ## Commitment Discipline
 
-Solana commitment levels represent different levels of network confirmation, and different RPC queries may legitimately return different answers if they use different commitment levels [web:105][web:106]. A frequent production bug is not "bad RPC" but an application mixing `processed`, `confirmed`, and `finalized` across blockhash fetch, simulation, reads, and confirmation, creating false inconsistencies [web:81][web:105].
+Solana commitment levels represent different levels of network confirmation, and different RPC queries may legitimately return different answers if they use different commitment levels. A frequent production bug is not "bad RPC" but an application mixing `processed`, `confirmed`, and `finalized` across blockhash fetch, simulation, reads, and confirmation, creating false inconsistencies.
 
 Always ask:
 - what commitment level was used for the read?
@@ -113,7 +113,7 @@ A common production failure is:
 - send through provider C
 - confirm through provider D
 
-This architecture can work, but only if freshness and commitment are tightly controlled. Helius specifically recommends aligning blockhash commitment and `preflightCommitment`, and being careful when different providers are involved in the same transaction lifecycle [web:81]. Solana documentation also recommends getting fresh blockhashes from healthy nodes and, when comparing endpoints, using the one with the freshest context [web:78].
+This architecture can work, but only if freshness and commitment are tightly controlled. Helius specifically recommends aligning blockhash commitment and `preflightCommitment`, and being careful when different providers are involved in the same transaction lifecycle. Solana documentation also recommends getting fresh blockhashes from healthy nodes and, when comparing endpoints, using the one with the freshest context.
 
 Ask:
 - which RPC returned the blockhash?
@@ -127,7 +127,7 @@ If not, call this out explicitly as a likely architecture issue.
 
 ## Read-Path Pitfalls
 
-For read-heavy applications, especially dashboards, bots, and indexer-lite backends, not every inconsistency is a provider failure. Some methods are inherently expensive and more sensitive to response-time variability. Solana's `getProgramAccounts` returns all accounts owned by a program, optionally filtered, and Tatum notes that it can be slow on large programs, especially with `jsonParsed`, weak filtering, or overly broad scans [web:115][web:110].
+For read-heavy applications, especially dashboards, bots, and indexer-lite backends, not every inconsistency is a provider failure. Some methods are inherently expensive and more sensitive to response-time variability. Solana's `getProgramAccounts` returns all accounts owned by a program, optionally filtered, and Tatum notes that it can be slow on large programs, especially with `jsonParsed`, weak filtering, or overly broad scans.
 
 Ask:
 - is the app overusing `getProgramAccounts` in latency-sensitive paths?
@@ -140,7 +140,7 @@ Do not label expected slowness from a heavy method as mysterious RPC instability
 
 ## Confirmation Path Pitfalls
 
-The confirmation path should treat the transaction signature as the durable source of truth once the transaction is actually submitted. Solana guidance emphasizes checking status and validity explicitly rather than guessing from client timeouts, and blockhash-expiry handling should be tied to `lastValidBlockHeight` and observed status checks rather than blind resends [web:78][web:81].
+The confirmation path should treat the transaction signature as the durable source of truth once the transaction is actually submitted. Solana guidance emphasizes checking status and validity explicitly rather than guessing from client timeouts, and blockhash-expiry handling should be tied to `lastValidBlockHeight` and observed status checks rather than blind resends.
 
 Ask:
 - do you have a signature?
@@ -158,7 +158,7 @@ Simulation can disagree across providers when:
 - commitments differ
 - different account states are visible
 - `replaceRecentBlockhash` behavior differs or is omitted
-- the transaction depends on rapidly moving state [web:81]
+- the transaction depends on rapidly moving state
 
 Ask:
 - which provider ran simulation?

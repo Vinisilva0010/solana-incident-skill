@@ -171,7 +171,7 @@ This ordering matters. Do not default to "fees too low" before checking blockhas
 
 ## Blockhash and Expiry Checks
 
-Blockhash handling is one of the most common causes of transaction expiry and confusing non-landing behavior on Solana. Solana documentation explains that confirmation and expiration depend on the relationship between the transaction blockhash, the block height used for expiry, and the RPC used to evaluate validity [web:78]. Helius also notes that "blockhash not found" and expiry issues often come from commitment mismatch, lagging RPCs, or using a blockhash that is too old or newer than what the checking RPC recognizes, and recommends matching `preflightCommitment`, retrying while the blockhash remains valid, and tracking `lastValidBlockHeight` [web:81].
+Blockhash handling is one of the most common causes of transaction expiry and confusing non-landing behavior on Solana. Solana documentation explains that confirmation and expiration depend on the relationship between the transaction blockhash, the block height used for expiry, and the RPC used to evaluate validity. Helius also notes that "blockhash not found" and expiry issues often come from commitment mismatch, lagging RPCs, or using a blockhash that is too old or newer than what the checking RPC recognizes, and recommends matching `preflightCommitment`, retrying while the blockhash remains valid, and tracking `lastValidBlockHeight`.
 
 Ask:
 - which RPC fetched the blockhash?
@@ -190,7 +190,7 @@ Suspicion is high when:
 
 ## Priority Fee and Landing Checks
 
-Dropped transactions are frequently misdiagnosed as "network congestion" when the real issue is a mix of stale blockhashes, incorrect compute sizing, weak submission path, or fees that are not tuned to the local fee market of the accounts touched by the transaction [web:85]. Priority fees on Solana are account-local rather than purely global, so the right question is not "was the network busy?" but "did this transaction bid enough for the contested accounts it touched?" [web:85].
+Dropped transactions are frequently misdiagnosed as "network congestion" when the real issue is a mix of stale blockhashes, incorrect compute sizing, weak submission path, or fees that are not tuned to the local fee market of the accounts touched by the transaction . Priority fees on Solana are account-local rather than purely global, so the right question is not "was the network busy?" but "did this transaction bid enough for the contested accounts it touched?".
 
 Ask:
 - what accounts does the transaction touch?
@@ -200,11 +200,11 @@ Ask:
 - was a Jito bundle used?
 - was the transaction submitted through one path or multiple paths?
 
-Do not recommend blindly raising fees without checking compute sizing and blockhash freshness first [web:85].
+Do not recommend blindly raising fees without checking compute sizing and blockhash freshness first.
 
 ## Simulation Mismatch Checks
 
-Simulation can diverge from production when state changes between simulation and landing, when the simulated blockhash is replaced, when RPCs disagree about current state, or when account contention changes execution conditions before inclusion [web:81]. A simulation success does not prove execution success under live state movement, especially for swaps, mints, bots, and highly contested accounts [web:82].
+Simulation can diverge from production when state changes between simulation and landing, when the simulated blockhash is replaced, when RPCs disagree about current state, or when account contention changes execution conditions before inclusion. A simulation success does not prove execution success under live state movement, especially for swaps, mints, bots, and highly contested accounts.
 
 Ask:
 - how much time passed between simulation and send?
